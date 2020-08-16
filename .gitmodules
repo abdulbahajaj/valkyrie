@@ -1,0 +1,3 @@
+[submodule "runtime-templates"]
+	path = runtime-templates
+	url = https://github.com/abdulbahajaj/valk-runtime.git
