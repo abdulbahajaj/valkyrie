@@ -9,7 +9,6 @@
   (assoc-in trans [:out key] (conj (-> trans :out key) el)))
 
 (defn client-add-ns [trans]
-  (println trans)
   (trans-append trans :client '(ns valk.generated)))
 
 (defn emit [path content]
