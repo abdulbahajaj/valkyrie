@@ -1,13 +1,28 @@
 ;; This is the compiler. It gets a Valkyrie source file as an input.
+(ns valk
+  (:require [clojure.java.io :as io]
+            [clojure.string :as s]))
+
+(def ^:const out-path "out")
+
+(defn trans-append [trans key el]
+  (assoc-in trans [:out key] (conj (-> trans :out key) el)))
+
+(defn client-add-ns [trans]
+  (println trans)
+  (trans-append trans :client '(ns valk.generated)))
+
+(defn emit [path content]
+  (spit (format "%s/%s" out-path path) (s/join "\n" content)))
 
 (defn write-file-contents [out]
-  (clojure.java.io/make-parents "out/server.cljs")
-  (spit "out/server.cljs" (:server out))
-  (spit "out/client.cljs" (:client out)))
+  (emit "/server.cljs" (:server out))
+  (emit "/client/src/valk/generated.cljs" (:client out)))
 
 (defn generate-code [parsed-file]
-  (-> {:ast parsed-file :out {:server '() :client '()}}
+  (-> {:ast parsed-file :out {:server '[] :client []}}
       ;; Add code generation functions here. Each function gets the above dictionary and modifies the out structure. At the end out will be written as files.
+      client-add-ns
       :out
       write-file-contents))
 
