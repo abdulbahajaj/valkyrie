@@ -11,17 +11,32 @@
 (defn client-add-ns [trans]
   (trans-append trans :client '(ns valk.generated)))
 
+(defn vserver-add-ns [trans]
+  (trans-append trans :server '(ns vserver.generated)))
+
+(defn vserver-add-app [trans]
+  (trans-append
+   trans
+   :server
+   '(defn app [req]
+      (println req)
+      {:status  200
+       :headers {"Content-Type" "text/html"}
+       :body    "Valk server runtime"})))
+
 (defn emit [path content]
   (spit (format "%s/%s" out-path path) (s/join "\n" content)))
 
 (defn write-file-contents [out]
-  (emit "/server.cljs" (:server out))
+  (emit "/vserver/src/vserver/generated.clj" (:server out))
   (emit "/client/src/valk/generated.cljs" (:client out)))
 
 (defn generate-code [parsed-file]
   (-> {:ast parsed-file :out {:server '[] :client []}}
       ;; Add code generation functions here. Each function gets the above dictionary and modifies the out structure. At the end out will be written as files.
       client-add-ns
+      vserver-add-ns
+      vserver-add-app
       :out
       write-file-contents))
 
