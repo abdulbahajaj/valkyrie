@@ -1,5 +1,0 @@
-;;;;
-
-(println "Something")
-;;
-(println "Not something")

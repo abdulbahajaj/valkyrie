@@ -5,8 +5,8 @@
 
 (def ^:const out-path "out")
 
-(defn trans-append [trans key el]
-  (assoc-in trans [:out key] (conj (-> trans :out key) el)))
+(defn trans-append [trans key & el]
+  (assoc-in trans [:out key] (concat (-> trans :out key) el)))
 
 (defn client-add-ns [trans]
   (trans-append trans :client '(ns valk.generated)))
@@ -24,6 +24,9 @@
        :headers {"Content-Type" "text/html"}
        :body    "Valk server runtime"})))
 
+(defn copy-parsed-file-to-client [trans]
+  (apply trans-append trans :client (:ast trans)))
+
 (defn emit [path content]
   (spit (format "%s/%s" out-path path) (s/join "\n" content)))
 
@@ -37,6 +40,8 @@
       client-add-ns
       vserver-add-ns
       vserver-add-app
+
+      copy-parsed-file-to-client
       :out
       write-file-contents))
 
