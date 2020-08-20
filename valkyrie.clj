@@ -8,18 +8,26 @@
 (defn trans-append [trans key & el]
   (assoc-in trans [:out key] (concat (-> trans :out key) el)))
 
-(defn client-add-ns [trans]
-  (trans-append trans :client '(ns valk.generated)))
 
-(defn vserver-add-ns [trans]
-  (trans-append trans :server '(ns vserver.generated)))
+
+
+
+(defn is-server-special-form? [exp]
+  (if (not (seq? exp)) false
+      (let [sym (first exp)]
+        (and (symbol? sym) (.contains ["defs"] (str sym))))))
+
+(defn collect-server-special-forms [trans]
+   (reduce #(if (is-server-special-form? %2) (concat %1 (list %2)) %1)
+          '() (:ast trans)))
+(defn add-server-sf-to-server [trans]
+  (apply trans-append trans :server (collect-server-special-forms trans)))
 
 (defn vserver-add-app [trans]
   (trans-append
    trans
    :server
    '(defn app [req]
-      (println req)
       {:status  200
        :headers {"Content-Type" "text/html"}
        :body    "Valk server runtime"})))
@@ -28,7 +36,7 @@
   (apply trans-append trans :client (:ast trans)))
 
 (defn emit [path content]
-  (spit (format "%s/%s" out-path path) (s/join "\n" content)))
+  (spit (format "%s/%s" out-path path) (s/join "\n" content) :append true))
 
 (defn write-file-contents [out]
   (emit "/vserver/src/vserver/generated.clj" (:server out))
@@ -37,9 +45,8 @@
 (defn generate-code [parsed-file]
   (-> {:ast parsed-file :out {:server '[] :client []}}
       ;; Add code generation functions here. Each function gets the above dictionary and modifies the out structure. At the end out will be written as files.
-      client-add-ns
-      vserver-add-ns
       vserver-add-app
+      add-server-sf-to-server
 
       copy-parsed-file-to-client
       :out
