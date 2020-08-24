@@ -1,0 +1,6 @@
+(defs server-function []
+  {:response "This function run in the server" })
+ 
+(defn app []
+  (server-function #(prn %))
+  "HELLO WORLD")
