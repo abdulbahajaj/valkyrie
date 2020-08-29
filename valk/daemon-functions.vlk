@@ -1,0 +1,7 @@
+(startd daemon-func
+    "* * * ? * *"
+    (println "daemon-func"))
+
+(defn app []
+    (println "app")
+)
