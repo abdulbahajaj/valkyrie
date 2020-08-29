@@ -1,6 +1,6 @@
 (defs server-function []
-  {:response "This function run in the server" })
+  "This function run in the server")
  
 (defn app []
-  (server-function #(prn %))
+  (server-function #((.-log js/console) (:body %)))
   "HELLO WORLD")

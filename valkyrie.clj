@@ -1,7 +1,7 @@
 ;; This is the compiler. It gets a Valkyrie source file as an input.
 (ns valk
   (:require [clojure.java.io :as io]
-            [clojure.string :as s]))
+            [clojure.string :as string]))
 
 (def ^:const out-path "out")
 
@@ -11,7 +11,7 @@
 (defn is-server-special-form? [exp]
   (if (not (seq? exp)) false
       (let [sym (first exp)]
-        (and (symbol? sym) (.contains ["defs" "startd"] (str sym))))))
+        (and (symbol? sym) (.contains ["defs", "defchan", "startd"] (str sym))))))
 
 (defn collect-server-special-forms [trans]
    (reduce #(if (is-server-special-form? %2) (concat %1 (list %2)) %1)
@@ -32,7 +32,7 @@
   (apply trans-append trans :client (:ast trans)))
 
 (defn emit [path content]
-  (spit (format "%s/%s" out-path path) (s/join "\n" content) :append true))
+  (spit (format "%s/%s" out-path path) (string/join "\n" content) :append true))
 
 (defn write-file-contents [out]
   (emit "/vserver/src/vserver/generated.clj" (:server out))
