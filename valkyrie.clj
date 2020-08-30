@@ -8,14 +8,10 @@
 (defn trans-append [trans key & el]
   (assoc-in trans [:out key] (concat (-> trans :out key) el)))
 
-
-
-
-
 (defn is-server-special-form? [exp]
   (if (not (seq? exp)) false
       (let [sym (first exp)]
-        (and (symbol? sym) (.contains ["defs", "defchan"] (str sym))))))
+        (and (symbol? sym) (.contains ["defs", "defchan", "startd"] (str sym))))))
 
 (defn collect-server-special-forms [trans]
    (reduce #(if (is-server-special-form? %2) (concat %1 (list %2)) %1)

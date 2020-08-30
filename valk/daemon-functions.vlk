@@ -1,0 +1,18 @@
+;; Runs every second
+(startd daemon-func
+    "* * * ? * *"
+    (println "daemon-func"))
+
+;; Runs every minute
+(startd daemon-func2
+    "0 * * ? * *"
+    (println "daemon-func2"))
+
+;; Runs every two minutes
+(startd daemon-func3
+    "0 */2 * ? * *"
+    (println "daemon-func3"))
+
+(defn app []
+    (println "app")
+)
