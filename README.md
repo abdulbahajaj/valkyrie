@@ -3,6 +3,7 @@ Valkyrie is a programming language designed for writing client-server applicatio
 
 ## Demo
 Source repl: https://repl.it/@noapi/valkyrie#.replit
+
 Description:
 
 ## Documentation
@@ -27,5 +28,7 @@ ___
 
 
 Team: @noapi
+
 Team Members: @abdulbahajaj @natalianzp
+
 Github: https://github.com/abdulbahajaj/valkyrie
