@@ -3,7 +3,7 @@
 # Set to true if running in repl.it
 replit=true
 
-Compiler entry point
+# Compiler entry point
 rm -rf out
 git clone https://github.com/abdulbahajaj/valk-runtime.git out
 clj valkyrie.clj $@
