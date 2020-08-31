@@ -12,6 +12,8 @@ In the good old days, if you wanted to have an html page with some stuff from yo
 6. Debug it until it works
 7. Hope that stuff don't change too much
 
+Valkyrie allows you to describe the connection between the client and server via language constructs. For example you can define "server functions" and invoke them from the client. The compiler will generate a server and a client that know how to talk to each other.
+
 ## Demo
 Source repl: https://repl.it/@noapi/valkyrie#.replit
 
