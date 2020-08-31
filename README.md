@@ -21,17 +21,26 @@ Description:
 
 ## Documentation
 ### Server Functions
-defs
+Server functions can be defined using the ```defs``` special form. They are functions that run on the server but can be invoked from the client. They are the equivalent of a REST api call.
 
-defchan
+##### Valkyrie Example:
+```clojure
+(defs server-function []
+  "This function run in the server")
+ 
+(defn app []
+  (server-function #((.-log js/console) (:body %)))
+  "HELLO WORLD")
+```
 
+In this example the client will render a react component that renders HELLO WORLD. The react component will asynchronouslly call a server function called "server-function" which will run on the server and return "This function run in the server" to the client. The client will in turn console log "This function run in the server".
 ___
 
 ### Daemon Functions
-Daemon functions can be setup and defined using the ```startd``` keyword. This keyword is followed by a function name, a string containing a cron expression and a function body.
+Daemon functions can be setup and defined using the ```startd``` special form. This keyword is followed by a function name, a string containing a cron expression and a function body.
 
 ##### Valkyrie Example:
-```
+```clojure
 (startd daemon-func
     "* * * ? * *"		;; cron expression
     (println "in-daemon-func"))	;; function body
