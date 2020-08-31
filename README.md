@@ -1,5 +1,16 @@
 # Valkyrie
-Valkyrie is a programming language designed for writing client-server applications without the redundant API code. The language is built on top of Clojure on the server side and ClojureScript on the client side.
+Valkyrie is a programming language designed for writing client-server applications without having to coordinate the client and the server.
+
+In every client/server application you have to build an API for the client and the server to communicate with each other. This is becoming more true in reactive applications. 
+
+In the good old days, if you wanted to have an html page with some stuff from your database, you could just write an html page and open php brackets <? and write code to retrieve whatever you want and render it with the html page ?>. Since then the difficulty has increase substantially. To do that now you have to 
+1. Write an html page
+2. Choose a way for the client to communicate to the server ( GraphQL? REST? )
+3. Design an API 
+4. Implement it 
+5. Test it
+6. Debug it until it works
+7. Hope that stuff don't change too much
 
 ## Demo
 Source repl: https://repl.it/@noapi/valkyrie#.replit
