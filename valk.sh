@@ -15,4 +15,4 @@ if [ "$replit" = true ] ; then
   chmod a+x /home/runner/.apt/usr/bin/lein
 fi
 
-cd out && make build_server && make run_server
+cd out && make run_server
