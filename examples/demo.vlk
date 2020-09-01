@@ -10,7 +10,7 @@
 
 (defonce client-counter (r/atom 0))
 
-(defn server-env []
+(defn current-server-count-component []
   [:div
    [:strong "Server daemon function ran:  "]
    @client-counter])
