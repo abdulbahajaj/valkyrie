@@ -1,0 +1,25 @@
+(defs initialize-server-counter []
+  (def counter (atom 0))
+  "initialized")
+
+(defs get-server-counter [] @counter)
+
+(startd increment-func-every-second-in-server
+    "* * * ? * *"
+    (swap! counter inc))
+
+(defonce client-counter (r/atom 0))
+
+(defn server-env []
+  [:div
+   [:strong "Server daemon function ran:  "]
+   @client-counter])
+
+(initialize-server-counter (fn [response]))
+
+(defn app []
+  (js/setTimeout #(get-server-counter
+                   (fn [response]
+                     (swap! client-counter
+                            (fn [y] (:body response))))) 3000)
+  (server-env))
