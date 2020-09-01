@@ -41,7 +41,7 @@ Source repl: https://repl.it/@noapi/valkyrie#.replit
                    (fn [response]
                      (swap! client-counter
                             (fn [y] (:body response))))) 3000)
-  (server-env))
+  (current-server-count-component))
 ```
 
 Description:
@@ -51,6 +51,7 @@ In this demo valk will generate a server and a client. The execution flow is as 
 3. The server function `get-server-counter` returns the value of the counter when it is called
 4. The client executes the server function `get-server-counter` every 3 seconds and updates the client variable `client-counter` to be equal to the counter value in the server
 5. When the value of client-counter changes the react component `current-server-count-component` will rerender and display the most recent value 
+6. App as the root react element
 
 This is an example of how you can easily coordinate the exchange of information between the server and the client, using language constructs, without having to define a million API endpoints.
 

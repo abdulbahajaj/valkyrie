@@ -22,4 +22,4 @@
                    (fn [response]
                      (swap! client-counter
                             (fn [y] (:body response))))) 3000)
-  (server-env))
+  (current-server-count-component))
