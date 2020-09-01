@@ -16,8 +16,44 @@ Valkyrie allows you to describe the connection between the client and server via
 
 ## Demo
 Source repl: https://repl.it/@noapi/valkyrie#.replit
+```clojure
+(defs initialize-server-counter []
+  (def counter (atom 0))
+  "initialized")
+
+(defs get-server-counter [] @counter)
+
+(startd increment-func-every-second-in-server
+    "* * * ? * *"
+    (swap! counter inc))
+
+(defonce client-counter (r/atom 0))
+
+(defn current-server-count-component []
+  [:div
+   [:strong "Server daemon function ran:  "]
+   @client-counter])
+
+(initialize-server-counter (fn [response]))
+
+(defn app []
+  (js/setTimeout #(get-server-counter
+                   (fn [response]
+                     (swap! client-counter
+                            (fn [y] (:body response))))) 3000)
+  (server-env))
+```
 
 Description:
+In this demo valk will generate a server and a client. The execution flow is as follow:
+1. The client calls the server function `initialize-server-counter` to set a global variable counter in the server to 0
+2. The daemon function `increment-func-every-second-in-server` will run every second in the server and increments the counter by 1
+3. The server function `get-server-counter` returns the value of the counter when it is called
+4. The client executes the server function `get-server-counter` every 3 seconds and updates the client variable `client-counter` to be equal to the counter value in the server
+5. When the value of client-counter changes the react component `current-server-count-component` will rerender and display the most recent value 
+
+This is an example of how you can easily coordinate the exchange of information between the server and the client, using language constructs, without having to define a million API endpoints.
+
 
 ## Documentation
 ### Server Functions
